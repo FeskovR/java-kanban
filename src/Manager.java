@@ -8,19 +8,20 @@ public class Manager {
     protected HashMap<Integer, Epic> epics = new HashMap<>();
 
     public void addNewTask(Task task) {
-        task.setId(id++);
+        task.setId(getNextId());
         tasks.put(task.getId(), task);
     }
 
     public void addNewSubtask(Subtask subtask) {
-        subtask.setId(id++);
+        subtask.setId(getNextId());
         subtasks.put(subtask.getId(), subtask);
     }
 
     public void addNewEpic(Epic epic) {
-        epic.setId(id++);
+        if (epic.getId() == 0) {
+            epic.setId(getNextId());
+        }
         epics.put(epic.getId(), epic);
-        String status = "";
         for (Integer subtaskId : epic.getSubtasksId()) {
             subtasks.get(subtaskId).setEpicID(epic.getId());
         }
@@ -52,6 +53,10 @@ public class Manager {
         }
     }
 
+    private int getNextId(){
+        return id++;
+    }
+
     public ArrayList<Task> getAllTasks() {
         return new ArrayList<>(tasks.values());
     }
@@ -81,11 +86,7 @@ public class Manager {
             return tasks.get(id);
         } else if (subtasks.containsKey(id)) {
             return subtasks.get(id);
-        } else if (epics.containsKey(id)) {
-            return epics.get(id);
-        } else {
-            return null;
-        }
+        } else return epics.getOrDefault(id, null);
     }
 
     public void updateTask(Task newTask) {
@@ -97,7 +98,9 @@ public class Manager {
     }
 
     public void updateEpic(Epic newEpic) {
-        epics.put(newEpic.getId(), newEpic);
+        int epicId = newEpic.getId();
+        epics.remove(epicId);
+        addNewEpic(newEpic);
     }
 
     public void deleteTask(int id) {

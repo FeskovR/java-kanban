@@ -23,7 +23,15 @@ public class Main {
         manager.addNewTask(task1);
         manager.addNewTask(task2);
 
-        System.out.println(manager.getAllTasks());
+//        System.out.println(manager.getAllTasks());
+        System.out.println(manager.getAllSubtasks());
+        System.out.println(manager.getAllEpics());
+
+
+
+        epic1.getSubtasksId().stream().map(manager::getById).forEach(e -> e.status = "DONE");
+        manager.updateEpic(epic1);
+
         System.out.println(manager.getAllSubtasks());
         System.out.println(manager.getAllEpics());
     }

@@ -23,6 +23,11 @@ public class Task {
         this.id = id;
     }
 
+    public void setStatus(String status) {
+        //не понял для чего нужен сеттер для поля статус, если статус присваивается в конструкторе
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "Task{" +
