@@ -1,10 +1,10 @@
 public class Task {
     protected String title;
     protected String desc;
-    protected String status;
+    protected TaskStatus status;
     protected int id;
 
-    public Task(String title, String desc, String status) {
+    public Task(String title, String desc, TaskStatus status) {
         this.title = title;
         this.desc = desc;
         this.status = status;
@@ -23,8 +23,7 @@ public class Task {
         this.id = id;
     }
 
-    public void setStatus(String status) {
-        //не понял для чего нужен сеттер для поля статус, если статус присваивается в конструкторе
+    public void setStatus(TaskStatus status) {
         this.status = status;
     }
 

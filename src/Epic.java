@@ -15,7 +15,7 @@ public class Epic extends Task {
         this.subtasksId.add(subtaskId);
     }
 
-    public void setStatus(String status) {
+    public void setStatus(TaskStatus status) {
         this.status = status;
     }
 

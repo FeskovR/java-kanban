@@ -1,7 +1,7 @@
 public class Subtask extends Task {
     private int epicID;
 
-    public Subtask(String title, String desc, String status) {
+    public Subtask(String title, String desc, TaskStatus status) {
         super(title, desc, status);
     }
 
@@ -13,7 +13,7 @@ public class Subtask extends Task {
         this.epicID = epicID;
     }
 
-    public String getStatus() {
+    public TaskStatus getStatus() {
         return status;
     }
 
