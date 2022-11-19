@@ -91,33 +91,24 @@ public class InMemoryTaskManager implements TaskManager{
         epics.clear();
     }
 
-//    public Task getById(int id) {
-//        if (tasks.containsKey(id)) {
-//            return tasks.get(id);
-//        } else if (subtasks.containsKey(id)) {
-//            return subtasks.get(id);
-//        } else return epics.getOrDefault(id, null);
-//    }
-
-
     @Override
     public Task getTask(int id) {
         Task task = tasks.getOrDefault(id, null);
-        watchTask(task);
+        addTaskToHistory(task);
         return task;
     }
 
     @Override
     public Subtask getSubtask(int id) {
         Subtask task = subtasks.getOrDefault(id, null);
-        watchTask(task);
+        addTaskToHistory(task);
         return task;
     }
 
     @Override
     public Epic getEpic(int id) {
         Epic task = epics.getOrDefault(id, null);
-        watchTask(task);
+        addTaskToHistory(task);
         return task;
     }
 
@@ -167,7 +158,7 @@ public class InMemoryTaskManager implements TaskManager{
         return history.getHistory();
     }
 
-    private void watchTask(Task task) {
+    private void addTaskToHistory(Task task) {
         if (task != null) {
             history.add(task);
         }
