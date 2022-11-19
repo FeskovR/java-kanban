@@ -19,6 +19,6 @@ public interface TaskManager {
     void deleteTask(int id);
     void deleteSubtask(int id);
     void deleteEpic(int id);
-    ArrayList<Subtask> getSubtasksByEpic(Epic epic);
     ArrayList<Task> getHistory();
+    ArrayList<Subtask> getSubtasksByEpic(Epic epic);
 }
