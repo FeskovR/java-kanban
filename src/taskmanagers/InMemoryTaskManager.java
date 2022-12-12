@@ -7,6 +7,7 @@ import tasks.Task;
 import tasks.TaskStatus;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class InMemoryTaskManager implements TaskManager{
     private int id = 1;
@@ -138,16 +139,19 @@ public class InMemoryTaskManager implements TaskManager{
 
     @Override
     public void deleteTask(int id) {
+        history.remove(id);
         tasks.remove(id);
     }
 
     @Override
     public void deleteSubtask(int id) {
+        history.remove(id);
         subtasks.remove(id);
     }
 
     @Override
     public void deleteEpic(int id) {
+        history.remove(id);
         epics.remove(id);
     }
 
@@ -161,7 +165,7 @@ public class InMemoryTaskManager implements TaskManager{
     }
 
     @Override
-    public ArrayList<Task> getHistory() {
+    public List<Task> getHistory() {
         return history.getHistory();
     }
 
