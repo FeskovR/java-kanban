@@ -57,6 +57,15 @@ public class Main {
         System.out.println(inMemoryTaskManager.getHistory());
         inMemoryTaskManager.getEpic(8);
         System.out.println(inMemoryTaskManager.getHistory());
+        inMemoryTaskManager.getSubtask(3);
+        System.out.println(inMemoryTaskManager.getHistory());
+        inMemoryTaskManager.deleteTask(2);
+        System.out.println("After delete");
+        System.out.println(inMemoryTaskManager.getHistory());
+        inMemoryTaskManager.deleteEpic(7);
+        System.out.println("After delete EPIC #7");
+        System.out.println(inMemoryTaskManager.getHistory());
+
         System.out.println(inMemoryTaskManager.getHistory().size());
     }
 }
