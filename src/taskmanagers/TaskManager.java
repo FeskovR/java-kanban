@@ -11,9 +11,9 @@ public interface TaskManager {
     void addNewTask(Task task);
     void addNewSubtask(Subtask subtask);
     void addNewEpic(Epic epic);
-    ArrayList<Task> getAllTasks();
-    ArrayList<Subtask> getAllSubtasks();
-    ArrayList<Epic> getAllEpics();
+    List<Task> getAllTasks();
+    List<Subtask> getAllSubtasks();
+    List<Epic> getAllEpics();
     void removeAllTasks();
     void removeAllSubtasks();
     void removeAllEpics();
@@ -27,5 +27,5 @@ public interface TaskManager {
     void deleteSubtask(int id);
     void deleteEpic(int id);
     List<Task> getHistory();
-    ArrayList<Subtask> getSubtasksByEpic(Epic epic);
+    List<Subtask> getSubtasksByEpic(Epic epic);
 }
