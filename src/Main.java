@@ -62,10 +62,15 @@ public class Main {
         inMemoryTaskManager.deleteTask(2);
         System.out.println("After delete");
         System.out.println(inMemoryTaskManager.getHistory());
-        inMemoryTaskManager.deleteEpic(7);
+        inMemoryTaskManager.deleteEpic(epic1.getId());
         System.out.println("After delete EPIC #7");
         System.out.println(inMemoryTaskManager.getHistory());
 
         System.out.println(inMemoryTaskManager.getHistory().size());
+
+        Task myTask = new Task("Моя первая настоящая задача!", "Я ее буду выполнять", TaskStatus.NEW);
+        inMemoryTaskManager.addNewTask(myTask);
+        inMemoryTaskManager.getTask(myTask.getId());
+        System.out.println(inMemoryTaskManager.getHistory());
     }
 }

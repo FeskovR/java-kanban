@@ -23,13 +23,7 @@ public class Subtask extends Task {
 
     @Override
     public String toString() {
-        return "tasks.Subtask{" +
-                "epicID=" + epicID +
-                ", title='" + title + '\'' +
-                ", desc='" + desc + '\'' +
-                ", status='" + status + '\'' +
-                ", id=" + id +
-                '}';
+        return id + ",SUBTASK," + title + "," + status + "," + desc + "," + epicID;
     }
 
     @Override

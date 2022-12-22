@@ -33,12 +33,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "tasks.Task{" +
-                "title='" + title + '\'' +
-                ", desc='" + desc + '\'' +
-                ", status='" + status + '\'' +
-                ", id=" + id +
-                '}';
+        return id + ",TASK," + title + "," + status + "," + desc + ",";
     }
 
     @Override
