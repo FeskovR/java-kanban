@@ -1,5 +1,8 @@
 package tasks;
 
+import constants.TaskStatus;
+import constants.TasksTypes;
+
 import java.util.Objects;
 
 public class Task {
@@ -33,7 +36,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return id + ",TASK," + title + "," + status + "," + desc + ",";
+        return id + "," + TasksTypes.TASK.toString() + "," + title + "," + status + "," + desc + ",";
     }
 
     @Override

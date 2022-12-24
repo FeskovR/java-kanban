@@ -3,7 +3,7 @@ import taskmanagers.TaskManager;
 import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
-import tasks.TaskStatus;
+import constants.TaskStatus;
 
 public class Main {
 
@@ -68,7 +68,7 @@ public class Main {
 
         System.out.println(inMemoryTaskManager.getHistory().size());
 
-        Task myTask = new Task("Моя первая настоящая задача!", "Я ее буду выполнять", TaskStatus.NEW);
+        Task myTask = new Task("Моя задача!", "выполнять", TaskStatus.NEW);
         inMemoryTaskManager.addNewTask(myTask);
         inMemoryTaskManager.getTask(myTask.getId());
         System.out.println(inMemoryTaskManager.getHistory());

@@ -1,5 +1,8 @@
 package tasks;
 
+import constants.TaskStatus;
+import constants.TasksTypes;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -24,7 +27,7 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return id + ",EPIC," + title + "," + status + "," + desc + ",";
+        return id + "," + TasksTypes.EPIC.toString() + "," + title + "," + status + "," + desc + ",";
     }
 
     @Override

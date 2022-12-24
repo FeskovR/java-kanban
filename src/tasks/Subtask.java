@@ -1,5 +1,8 @@
 package tasks;
 
+import constants.TaskStatus;
+import constants.TasksTypes;
+
 import java.util.Objects;
 
 public class Subtask extends Task {
@@ -23,7 +26,7 @@ public class Subtask extends Task {
 
     @Override
     public String toString() {
-        return id + ",SUBTASK," + title + "," + status + "," + desc + "," + epicID;
+        return id + "," + TasksTypes.SUBTASK.toString() + "," + title + "," + status + "," + desc + "," + epicID;
     }
 
     @Override

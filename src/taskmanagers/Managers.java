@@ -3,8 +3,7 @@ import history.InMemoryHistoryManager;
 
 public class Managers {
     public static TaskManager getDefault() {
-//        return new InMemoryTaskManager();
-        return new FileBackedTasksManager("src/files/history.csv");
+        return new FileBackedTasksManager("history.csv");
     }
 
     public static InMemoryHistoryManager getDefaultHistory() {
