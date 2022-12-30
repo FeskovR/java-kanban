@@ -1,7 +1,6 @@
 package taskmanagers;
 
 import constants.TaskStatus;
-import constants.TasksTypes;
 import exceptions.ManagerSaveException;
 import history.HistoryManager;
 import tasks.*;
@@ -10,7 +9,6 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class FileBackedTasksManager extends InMemoryTaskManager{
@@ -22,13 +20,12 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
     }
 
     private void save() throws ManagerSaveException{
-        String historyFilePath = path + historyFile;
         try{
             Files.createDirectory(Paths.get(path));
         } catch (Exception e) {
             e.getStackTrace();
         }
-        try(Writer writer = new FileWriter(historyFilePath)) {
+        try(Writer writer = new FileWriter(historyFile)) {
             writer.write("id,type,name,status,description,epic\n");
             for (Task task: tasks.values()) {
                 writer.write(task.toString() + "\n");
@@ -109,8 +106,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
             String fileString = builder.toString();
             String[] blocks = fileString.split("\n\n");
             String[] tasksStrings = blocks[0].split("\n");
-            String[] historyStrings = blocks[1].split(",");
-            List <Integer> historyIds = historyFromString(blocks[1]);
+//            String[] historyStrings = blocks[1].split(",");
+            List <Integer> historyIds = historyFromString(blocks[1].trim());
 
             for (int i = 1; i < tasksStrings.length; i++) {
                 String type = tasksStrings[i].split(",")[1];
@@ -135,7 +132,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
                 fileBackedTasksManager.getEpic(id);
             }
         } catch (IOException e) {
-            throw new ManagerSaveException(e.getMessage());
+//            throw new ManagerSaveException(e.getMessage());
+            return fileBackedTasksManager;
         } catch (ManagerSaveException e) {
             System.out.println(e.getMessage());
         }
