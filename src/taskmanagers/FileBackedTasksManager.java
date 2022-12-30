@@ -132,10 +132,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
                 fileBackedTasksManager.getEpic(id);
             }
         } catch (IOException e) {
-//            throw new ManagerSaveException(e.getMessage());
             return fileBackedTasksManager;
-        } catch (ManagerSaveException e) {
-            System.out.println(e.getMessage());
         }
 
         return fileBackedTasksManager;
