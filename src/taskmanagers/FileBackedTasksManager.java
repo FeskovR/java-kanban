@@ -16,7 +16,6 @@ import java.util.List;
 public class FileBackedTasksManager extends InMemoryTaskManager{
     final private String historyFile;
     final String path = "src/files/";
-    private HistoryManager historyManager = super.history;
 
     public FileBackedTasksManager(String file) {
         historyFile = file;
@@ -96,26 +95,52 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
         return historyList;
     }
 
-    static void loadFromFile(File file){
-        try(Reader reader = new FileReader(file)) {
+    public static FileBackedTasksManager loadFromFile(File file) {
+        FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(file.getAbsolutePath());
+        try(Reader reader = new FileReader(file.getAbsolutePath())) {
             BufferedReader br = new BufferedReader(reader);
-            StringBuilder fileStrings = new StringBuilder();
-            while (br.ready()){
-                fileStrings.append(br.readLine());
+            StringBuilder builder = new StringBuilder();
+
+            while (br.ready()) {
+                builder.append(br.readLine());
+                builder.append("\n");
             }
-            String fileString = fileStrings.toString();
+
+            String fileString = builder.toString();
             String[] blocks = fileString.split("\n\n");
             String[] tasksStrings = blocks[0].split("\n");
-            for (int i = 1; i < tasksStrings.length; i++){
-                String task = tasksStrings[i];
-                Task newTask = taskFromString(task);
+            String[] historyStrings = blocks[1].split(",");
+            List <Integer> historyIds = historyFromString(blocks[1]);
 
+            for (int i = 1; i < tasksStrings.length; i++) {
+                String type = tasksStrings[i].split(",")[1];
+                switch (type) {
+                    case "TASK":
+                        fileBackedTasksManager.addNewTask(taskFromString(tasksStrings[i]));
+                        break;
+                    case "SUBTASK":
+                        fileBackedTasksManager.addNewSubtask((Subtask) taskFromString(tasksStrings[i]));
+                        break;
+                    case "EPIC":
+                        fileBackedTasksManager.addNewEpic((Epic) taskFromString(tasksStrings[i]));
+                        break;
+                    default:
+                        System.out.println("Что-то пошло не так...и задача из файла не создалась!!!");
+                }
             }
-        } catch (FileNotFoundException e){
-            e.getStackTrace();
+
+            for (Integer id : historyIds) {
+                fileBackedTasksManager.getTask(id);
+                fileBackedTasksManager.getSubtask(id);
+                fileBackedTasksManager.getEpic(id);
+            }
         } catch (IOException e) {
+            throw new ManagerSaveException(e.getMessage());
+        } catch (ManagerSaveException e) {
             System.out.println(e.getMessage());
         }
+
+        return fileBackedTasksManager;
     }
 
     @Override

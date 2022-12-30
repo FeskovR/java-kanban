@@ -1,9 +1,11 @@
 package taskmanagers;
 import history.InMemoryHistoryManager;
 
+import java.io.File;
+
 public class Managers {
     public static TaskManager getDefault() {
-        return new FileBackedTasksManager("history.csv");
+        return FileBackedTasksManager.loadFromFile(new File("history.csv"));
     }
 
     public static InMemoryHistoryManager getDefaultHistory() {
