@@ -6,13 +6,18 @@ import constants.TasksTypes;
 import java.util.Objects;
 
 public class Subtask extends Task {
-    private int epicID;
+    private Integer epicID;
 
     public Subtask(String title, String desc, TaskStatus status) {
         super(title, desc, status);
     }
 
-    public int getEpicID() {
+    public Subtask(String title, String desc, TaskStatus status, Integer epicID) {
+        super(title, desc, status);
+        this.epicID = epicID;
+    }
+
+    public Integer getEpicID() {
         return epicID;
     }
 

@@ -9,7 +9,9 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FileBackedTasksManager extends InMemoryTaskManager{
     final private String historyFile;
@@ -42,8 +44,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
             System.out.println(e.getMessage());
             e.getStackTrace();
             throw new ManagerSaveException("Ошибка записи!");
-        } catch (ManagerSaveException e) {
-            System.out.println(e.getMessage());
         }
     }
 
@@ -56,7 +56,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
                 task.setId(Integer.parseInt(fields[0]));
                 break;
             case "SUBTASK":
-                task = new Subtask(fields[2], fields[4], TaskStatus.valueOf(fields[3]));
+                task = new Subtask(fields[2], fields[4], TaskStatus.valueOf(fields[3]), Integer.parseInt(fields[5]));
                 task.setId(Integer.parseInt(fields[0]));
                 break;
             case "EPIC":
@@ -106,8 +106,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
             String fileString = builder.toString();
             String[] blocks = fileString.split("\n\n");
             String[] tasksStrings = blocks[0].split("\n");
-//            String[] historyStrings = blocks[1].split(",");
             List <Integer> historyIds = historyFromString(blocks[1].trim());
+            Map <Integer, List<Integer>> subtasksToEpic = new HashMap<>();
 
             for (int i = 1; i < tasksStrings.length; i++) {
                 String type = tasksStrings[i].split(",")[1];
@@ -116,10 +116,26 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
                         fileBackedTasksManager.addNewTask(taskFromString(tasksStrings[i]));
                         break;
                     case "SUBTASK":
-                        fileBackedTasksManager.addNewSubtask((Subtask) taskFromString(tasksStrings[i]));
+                        Subtask subtask = (Subtask) taskFromString(tasksStrings[i]);
+                        List<Integer> subtasks = subtasksToEpic.getOrDefault(subtask.getEpicID(), null);
+                        if (subtasks != null) {
+                            subtasks.add(subtask.getId());
+                        } else {
+                            subtasks = new ArrayList<>();
+                            subtasks.add(subtask.getId());
+                        }
+                        subtasksToEpic.put(subtask.getEpicID(), subtasks);
+                        fileBackedTasksManager.addNewSubtask(subtask);
                         break;
                     case "EPIC":
-                        fileBackedTasksManager.addNewEpic((Epic) taskFromString(tasksStrings[i]));
+                        Epic epic = (Epic) taskFromString(tasksStrings[i]);
+                        List<Integer> subtasksList = subtasksToEpic.getOrDefault(epic.getId(), null);
+                        if (subtasksList != null) {
+                            for (Integer id : subtasksList) {
+                                epic.addSubtasksId(id);
+                            }
+                        }
+                        fileBackedTasksManager.addNewEpic(epic);
                         break;
                     default:
                         System.out.println("Что-то пошло не так...и задача из файла не создалась!!!");
@@ -131,6 +147,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
                 fileBackedTasksManager.getSubtask(id);
                 fileBackedTasksManager.getEpic(id);
             }
+        } catch (ManagerSaveException e) {  // Вот тут не совсем понял, Reader требует отлавливать IOException
+            System.out.println(e.getMessage());
         } catch (IOException e) {
             return fileBackedTasksManager;
         }

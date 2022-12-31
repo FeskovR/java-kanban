@@ -18,13 +18,15 @@ public class InMemoryTaskManager implements TaskManager{
 
     @Override
     public void addNewTask(Task task) {
-        task.setId(getNextId());
+        if (task.getId() == 0)
+            task.setId(getNextId());
         tasks.put(task.getId(), task);
     }
 
     @Override
     public void addNewSubtask(Subtask subtask) {
-        subtask.setId(getNextId());
+        if (subtask.getId() == 0)
+            subtask.setId(getNextId());
         subtasks.put(subtask.getId(), subtask);
     }
 
