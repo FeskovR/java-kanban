@@ -34,6 +34,10 @@ public class Task {
         this.status = status;
     }
 
+    public TaskStatus getStatus() {
+        return this.status;
+    }
+
     @Override
     public String toString() {
         return id + "," + TasksTypes.TASK.toString() + "," + title + "," + status + "," + desc + ",";
