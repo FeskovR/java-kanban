@@ -50,9 +50,6 @@ public class Main {
         Task task3 = new Task("Task3", "Desc task3", TaskStatus.NEW, "25.01.23 12.00", 30);
         taskManager.addNewTask(task3);
         taskManager.getTask(task3.getId());
-        Task task4 = new Task("Task4", "Desc task4", TaskStatus.DONE, "26.01.23 12.00", 30);
-        taskManager.addNewTask(task4);
-        taskManager.getTask(task4.getId());
         System.out.println(taskManager.getHistory()); //1 5 6 8 9
 
         TaskManager taskManager2 = Managers.getDefault(new File("src/files", "history.csv"));
