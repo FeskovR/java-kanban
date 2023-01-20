@@ -26,7 +26,7 @@ abstract class TaskManagerTest <T extends TaskManager> {
     @Test
     public void doesSubtasksHaveEpicAndEpicHaveSubtasksId() {
         Epic epic = new Epic("Epic1 title", "Epic1 desc");
-        Subtask subtask = new Subtask("Subtask title", "Subtask desc", TaskStatus.NEW);
+        Subtask subtask = new Subtask("Subtask title", "Subtask desc", TaskStatus.NEW, "25.01.23 12.00", 30);
         manager.addNewSubtask(subtask);
         epic.addSubtasksId(subtask.getId());
         manager.addNewEpic(epic);
@@ -37,8 +37,8 @@ abstract class TaskManagerTest <T extends TaskManager> {
     @Test
     public void shouldEpicStatusDoneWhenSubtasksDone() {
         Epic epic = new Epic("Epic title", "Epic desc");
-        Subtask subtask1 = new Subtask("Subtask1 title", "Subtask1 desc", TaskStatus.DONE);
-        Subtask subtask2 = new Subtask("Subtask2 title", "Subtask2 desc", TaskStatus.DONE);
+        Subtask subtask1 = new Subtask("Subtask1 title", "Subtask1 desc", TaskStatus.DONE, "25.01.23 12.00", 30);
+        Subtask subtask2 = new Subtask("Subtask2 title", "Subtask2 desc", TaskStatus.DONE, "26.01.23 12.00", 30);
         manager.addNewSubtask(subtask1);
         manager.addNewSubtask(subtask2);
         epic.addSubtasksId(subtask1.getId());
@@ -49,14 +49,14 @@ abstract class TaskManagerTest <T extends TaskManager> {
 
     @Test
     public void testAddNewTaskAndGetTaskId1() {
-        Task task = new Task("Task title", "Task desc", TaskStatus.IN_PROGRESS);
+        Task task = new Task("Task title", "Task desc", TaskStatus.IN_PROGRESS, "25.01.23 12.00", 30);
         manager.addNewTask(task);
         assertEquals(task, manager.getTask(1));
     }
 
     @Test
     public void testAddNewSubtaskAndGetSubtaskId1() {
-        Subtask task = new Subtask("Task title", "Task desc", TaskStatus.IN_PROGRESS);
+        Subtask task = new Subtask("Task title", "Task desc", TaskStatus.IN_PROGRESS, "25.01.23 12.00", 30);
         manager.addNewSubtask(task);
         assertEquals(task, manager.getSubtask(1));
     }
@@ -70,8 +70,8 @@ abstract class TaskManagerTest <T extends TaskManager> {
 
     @Test
     public void testGetAllTasks() {
-        Task task1 = new Task("Task1 title", "Task1 desc", TaskStatus.IN_PROGRESS);
-        Task task2 = new Task("Task2 title", "Task2 desc", TaskStatus.IN_PROGRESS);
+        Task task1 = new Task("Task1 title", "Task1 desc", TaskStatus.IN_PROGRESS, "25.01.23 12.00", 30);
+        Task task2 = new Task("Task2 title", "Task2 desc", TaskStatus.IN_PROGRESS, "26.01.23 12.00", 30);
         manager.addNewTask(task1);
         manager.addNewTask(task2);
         List<Task> tasks = new ArrayList<>();
@@ -82,8 +82,8 @@ abstract class TaskManagerTest <T extends TaskManager> {
 
     @Test
     public void testGetAllSubtasks() {
-        Subtask task1 = new Subtask("Task1 title", "Task1 desc", TaskStatus.IN_PROGRESS);
-        Subtask task2 = new Subtask("Task2 title", "Task2 desc", TaskStatus.IN_PROGRESS);
+        Subtask task1 = new Subtask("Task1 title", "Task1 desc", TaskStatus.IN_PROGRESS, "25.01.23 12.00", 30);
+        Subtask task2 = new Subtask("Task2 title", "Task2 desc", TaskStatus.IN_PROGRESS, "26.01.23 12.00", 30);
         manager.addNewSubtask(task1);
         manager.addNewSubtask(task2);
         List<Subtask> tasks = new ArrayList<>();
@@ -106,8 +106,8 @@ abstract class TaskManagerTest <T extends TaskManager> {
 
     @Test
     public void testRemoveAllTasks() {
-        Task task1 = new Task("Task1 title", "Task1 desc", TaskStatus.IN_PROGRESS);
-        Task task2 = new Task("Task2 title", "Task2 desc", TaskStatus.IN_PROGRESS);
+        Task task1 = new Task("Task1 title", "Task1 desc", TaskStatus.IN_PROGRESS, "25.01.23 12.00", 30);
+        Task task2 = new Task("Task2 title", "Task2 desc", TaskStatus.IN_PROGRESS, "26.01.23 12.00", 30);
         manager.addNewTask(task1);
         manager.addNewTask(task2);
         manager.removeAllTasks();
@@ -116,8 +116,8 @@ abstract class TaskManagerTest <T extends TaskManager> {
 
     @Test
     public void testRemoveAllSubtasks() {
-        Subtask task1 = new Subtask("Task1 title", "Task1 desc", TaskStatus.IN_PROGRESS);
-        Subtask task2 = new Subtask("Task2 title", "Task2 desc", TaskStatus.IN_PROGRESS);
+        Subtask task1 = new Subtask("Task1 title", "Task1 desc", TaskStatus.IN_PROGRESS, "25.01.23 12.00", 30);
+        Subtask task2 = new Subtask("Task2 title", "Task2 desc", TaskStatus.IN_PROGRESS, "26.01.23 12.00", 30);
         manager.addNewSubtask(task1);
         manager.addNewSubtask(task2);
         manager.removeAllSubtasks();
@@ -136,28 +136,28 @@ abstract class TaskManagerTest <T extends TaskManager> {
 
     @Test
     public void shouldReturnTaskIfIdIsWrong() {
-        Task task = new Task("Task title", "Task desc", TaskStatus.IN_PROGRESS);
+        Task task = new Task("Task title", "Task desc", TaskStatus.IN_PROGRESS, "25.01.23 12.00", 30);
         manager.addNewTask(task);
         assertNull(manager.getTask(2));
     }
 
     @Test
     public void shouldReturnTaskById() {
-        Task task = new Task("Task title", "Task desc", TaskStatus.IN_PROGRESS);
+        Task task = new Task("Task title", "Task desc", TaskStatus.IN_PROGRESS, "25.01.23 12.00", 30);
         manager.addNewTask(task);
         assertEquals(task, manager.getTask(1));
     }
 
     @Test
     public void shouldReturnSubtaskIfIdIsWrong() {
-        Subtask task = new Subtask("Task title", "Task desc", TaskStatus.IN_PROGRESS);
+        Subtask task = new Subtask("Task title", "Task desc", TaskStatus.IN_PROGRESS, "25.01.23 12.00", 30);
         manager.addNewSubtask(task);
         assertNull(manager.getSubtask(2));
     }
 
     @Test
     public void shouldReturnSubtaskById() {
-        Subtask task = new Subtask("Task title", "Task desc", TaskStatus.IN_PROGRESS);
+        Subtask task = new Subtask("Task title", "Task desc", TaskStatus.IN_PROGRESS, "25.01.23 12.00", 30);
         manager.addNewSubtask(task);
         assertEquals(task, manager.getSubtask(1));
     }
@@ -178,8 +178,8 @@ abstract class TaskManagerTest <T extends TaskManager> {
 
     @Test
     public void testUpdateTask() {
-        Task task = new Task("Task title", "Task desc", TaskStatus.IN_PROGRESS);
-        Task newTask = new Task("Task newTitle", "Task newDesc", TaskStatus.DONE);
+        Task task = new Task("Task title", "Task desc", TaskStatus.IN_PROGRESS, "25.01.23 12.00", 30);
+        Task newTask = new Task("Task newTitle", "Task newDesc", TaskStatus.DONE, "26.01.23 12.00", 30);
         manager.addNewTask(task);
         newTask.setId(task.getId());
         manager.updateTask(newTask);
@@ -188,8 +188,8 @@ abstract class TaskManagerTest <T extends TaskManager> {
 
     @Test
     public void testUpdateSubtask() {
-        Subtask task = new Subtask("Task title", "Task desc", TaskStatus.IN_PROGRESS);
-        Subtask newTask = new Subtask("new Subtask title", "new SubTask desc", TaskStatus.DONE);
+        Subtask task = new Subtask("Task title", "Task desc", TaskStatus.IN_PROGRESS, "25.01.23 12.00", 30);
+        Subtask newTask = new Subtask("new Subtask title", "new SubTask desc", TaskStatus.DONE, "26.01.23 12.00", 30);
         manager.addNewSubtask(task);
         newTask.setId(task.getId());
         manager.updateSubtask(newTask);
@@ -208,7 +208,7 @@ abstract class TaskManagerTest <T extends TaskManager> {
 
     @Test
     public void testDeleteTask() {
-        Task task = new Task("Task title", "Task desc", TaskStatus.NEW);
+        Task task = new Task("Task title", "Task desc", TaskStatus.NEW, "25.01.23 12.00", 30);
         manager.addNewTask(task);
         manager.deleteTask(task.getId());
         assertEquals(0, manager.getAllTasks().size());
@@ -216,7 +216,7 @@ abstract class TaskManagerTest <T extends TaskManager> {
 
     @Test
     public void testDeleteSubtask() {
-        Subtask task = new Subtask("Task title", "Task desc", TaskStatus.NEW);
+        Subtask task = new Subtask("Task title", "Task desc", TaskStatus.NEW, "25.01.23 12.00", 30);
         manager.addNewSubtask(task);
         manager.deleteSubtask(task.getId());
         assertEquals(0, manager.getAllSubtasks().size());
@@ -233,8 +233,8 @@ abstract class TaskManagerTest <T extends TaskManager> {
     @Test
     public void shouldReturnListOfSubtaskByEpicId() {
         Epic epic = new Epic("Title", "Description");
-        Subtask subtask = new Subtask("Title", "Description", TaskStatus.DONE);
-        Subtask subtask2 = new Subtask("Title", "Description", TaskStatus.NEW);
+        Subtask subtask = new Subtask("Title", "Description", TaskStatus.DONE, "25.01.23 12.00", 30);
+        Subtask subtask2 = new Subtask("Title", "Description", TaskStatus.NEW, "26.01.23 12.00", 30);
         manager.addNewSubtask(subtask);
         manager.addNewSubtask(subtask2);
         epic.addSubtasksId(subtask.getId());

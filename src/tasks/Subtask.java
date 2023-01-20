@@ -8,12 +8,12 @@ import java.util.Objects;
 public class Subtask extends Task {
     private Integer epicID;
 
-    public Subtask(String title, String desc, TaskStatus status) {
-        super(title, desc, status);
+    public Subtask(String title, String desc, TaskStatus status, String startTime, int duration) {
+        super(title, desc, status, startTime, duration);
     }
 
-    public Subtask(String title, String desc, TaskStatus status, Integer epicID) {
-        super(title, desc, status);
+    public Subtask(String title, String desc, TaskStatus status, String startTime, int duration, Integer epicID) {
+        super(title, desc, status, startTime, duration);
         this.epicID = epicID;
     }
 
@@ -31,7 +31,8 @@ public class Subtask extends Task {
 
     @Override
     public String toString() {
-        return id + "," + TasksTypes.SUBTASK.toString() + "," + title + "," + status + "," + desc + "," + epicID;
+        return id + "," + TasksTypes.SUBTASK.toString() + "," + title + "," + status + "," + desc + "," +
+                startTime.format(formatter()) + "," + duration + "," + getEndTime().format(formatter())+ "," + epicID;
     }
 
     @Override

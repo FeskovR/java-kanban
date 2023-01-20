@@ -5,6 +5,8 @@ import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
 import constants.TaskStatus;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,9 +42,12 @@ public class InMemoryTaskManager implements TaskManager{
             subtasks.get(subtaskId).setEpicID(epic.getId());
         }
         setEpicStatus(epic);
+        setEpicStartTime(epic);
+        setEpicDuration(epic);
+        setEpicEndTime(epic);
     }
 
-    private void setEpicStatus(Epic epic) {
+    protected void setEpicStatus(Epic epic) {
         int counter = 0;
         int min = 0;
         int max = 0;
@@ -67,7 +72,42 @@ public class InMemoryTaskManager implements TaskManager{
         }
     }
 
-    private int getNextId(){
+    protected void setEpicStartTime(Epic epic) {
+        List<Subtask> subtasksByEpic = getSubtasksByEpic(epic);
+        LocalDateTime startTime = null;
+        for (Subtask subtask : subtasksByEpic) {
+            if (startTime == null) {
+                startTime = subtask.getStartTime();
+            }else if (subtask.getStartTime().isBefore(startTime)){
+                startTime = subtask.getStartTime();
+            }
+        }
+        epic.setStartTime(startTime);
+    }
+
+    protected void setEpicDuration(Epic epic) {
+        List<Subtask> subtasksByEpic = getSubtasksByEpic(epic);
+        int duration = 0;
+        for (Subtask subtask : subtasksByEpic) {
+            duration += subtask.getDuration();
+        }
+        epic.setDuration(duration);
+    }
+
+    protected void setEpicEndTime(Epic epic) {
+        List<Subtask> subtasksByEpic = getSubtasksByEpic(epic);
+        LocalDateTime endTime = null;
+        for (Subtask subtask : subtasksByEpic) {
+            if (endTime == null) {
+                endTime = subtask.getEndTime();
+            } else if (subtask.getEndTime().isAfter(endTime)) {
+                endTime = subtask.getEndTime();
+            }
+        }
+        epic.setEndTime(endTime);
+    }
+
+    protected int getNextId(){
         return id++;
     }
 

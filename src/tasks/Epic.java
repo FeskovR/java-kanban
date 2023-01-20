@@ -3,10 +3,22 @@ package tasks;
 import constants.TaskStatus;
 import constants.TasksTypes;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class Epic extends Task {
+    private LocalDateTime endTime;
+
+    @Override
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
+
     protected ArrayList<Integer> subtasksId = new ArrayList<>();
 
     public Epic(String title, String desc) {
@@ -27,7 +39,8 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return id + "," + TasksTypes.EPIC.toString() + "," + title + "," + status + "," + desc + ",";
+        return id + "," + TasksTypes.EPIC.toString() + "," + title + "," + status + "," + desc + "," +
+                startTime.format(formatter()) + "," + duration + "," + getEndTime().format(formatter()) + ",";
     }
 
     @Override

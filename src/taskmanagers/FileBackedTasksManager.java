@@ -21,14 +21,14 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
         historyFile = file;
     }
 
-    private void save() throws ManagerSaveException{
+    public void save() throws ManagerSaveException{
         try{
             Files.createDirectory(Paths.get(path));
         } catch (Exception e) {
             e.getStackTrace();
         }
         try(Writer writer = new FileWriter(historyFile)) {
-            writer.write("id,type,name,status,description,epic\n");
+            writer.write("id,type,name,status,description,start time, duration, end time, epic\n");
             for (Task task: tasks.values()) {
                 writer.write(task.toString() + "\n");
             }
@@ -52,11 +52,22 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
         Task task;
         switch (fields[1]) {
             case "TASK":
-                task = new Task(fields[2], fields[4], TaskStatus.valueOf(fields[3]));
+                task = new Task(
+                        fields[2],
+                        fields[4],
+                        TaskStatus.valueOf(fields[3]),
+                        fields[5],
+                        Integer.parseInt(fields[6]));
                 task.setId(Integer.parseInt(fields[0]));
                 break;
             case "SUBTASK":
-                task = new Subtask(fields[2], fields[4], TaskStatus.valueOf(fields[3]), Integer.parseInt(fields[5]));
+                task = new Subtask(
+                        fields[2],
+                        fields[4],
+                        TaskStatus.valueOf(fields[3]),
+                        fields[5],
+                        Integer.parseInt(fields[6]),
+                        Integer.parseInt(fields[8]));
                 task.setId(Integer.parseInt(fields[0]));
                 break;
             case "EPIC":
@@ -73,6 +84,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
         List<Task> history = manager.getHistory();
         String historyString = "";
 
+        if (history.size() == 0) {
+            return " ";
+        }
+
         for (int i = 0; i < history.size(); i++) {
             if (i == history.size() - 1) {
                 historyString += history.get(i).getId();
@@ -85,6 +100,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
 
     static List<Integer> historyFromString(String value) {
         List <Integer> historyList = new ArrayList<>();
+        if (value.equals("")) {
+            return historyList;
+        }
         String[] taskIds = value.split(",");
         for (String taskId: taskIds) {
             historyList.add(Integer.parseInt(taskId));
@@ -113,7 +131,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
                 String type = tasksStrings[i].split(",")[1];
                 switch (type) {
                     case "TASK":
-                        fileBackedTasksManager.addNewTask(taskFromString(tasksStrings[i]));
+                        String taskString = tasksStrings[i];
+                        Task task = taskFromString(taskString);
+                        fileBackedTasksManager.addNewTask(task);
+                        //fileBackedTasksManager.addNewTask(taskFromString(tasksStrings[i]));
                         break;
                     case "SUBTASK":
                         Subtask subtask = (Subtask) taskFromString(tasksStrings[i]);
