@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class FileBackedTasksManager extends InMemoryTaskManager{
     final private String historyFile;
-    final String path = "src/files/";
+    final String path = "files/";
 
     public FileBackedTasksManager(String file) {
         historyFile = file;
@@ -134,7 +134,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
                         String taskString = tasksStrings[i];
                         Task task = taskFromString(taskString);
                         fileBackedTasksManager.addNewTask(task);
-                        //fileBackedTasksManager.addNewTask(taskFromString(tasksStrings[i]));
+                        fileBackedTasksManager.reduceId();
                         break;
                     case "SUBTASK":
                         Subtask subtask = (Subtask) taskFromString(tasksStrings[i]);
@@ -147,6 +147,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
                         }
                         subtasksToEpic.put(subtask.getEpicID(), subtasks);
                         fileBackedTasksManager.addNewSubtask(subtask);
+                        fileBackedTasksManager.reduceId();
                         break;
                     case "EPIC":
                         Epic epic = (Epic) taskFromString(tasksStrings[i]);
@@ -157,6 +158,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
                             }
                         }
                         fileBackedTasksManager.addNewEpic(epic);
+                        fileBackedTasksManager.reduceId();
                         break;
                     default:
                         System.out.println("Что-то пошло не так...и задача из файла не создалась!!!");
@@ -268,5 +270,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager{
         Epic epic = super.getEpic(id);
         save();
         return epic;
+    }
+
+    private void reduceId() {
+        this.id++;
     }
 }

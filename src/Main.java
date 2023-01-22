@@ -52,12 +52,9 @@ public class Main {
         taskManager.getTask(task3.getId());
         System.out.println(taskManager.getHistory()); //1 5 6 8 9
 
-        for (Task task : taskManager.getSortedTasks()) {
-            System.out.println(task);
-        }
+        System.out.println("Отсортированый список: " + taskManager.getPrioritizedTasks());
 
-
-        TaskManager taskManager2 = Managers.getDefault(new File("src/files", "history.csv"));
+        TaskManager taskManager2 = Managers.getDefault(new File("files", "history.csv"));
         System.out.println(taskManager2.getHistory());
         System.out.println(taskManager.getAllTasks().equals(taskManager2.getAllTasks()));
         System.out.println(taskManager.getAllSubtasks().equals(taskManager2.getAllSubtasks()));

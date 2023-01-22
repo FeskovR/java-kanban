@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
-public class Task {
+public class Task implements Comparable<Task>{
     protected String title;
     protected String desc;
     protected TaskStatus status;
@@ -75,7 +75,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return id + "," + TasksTypes.TASK.toString() + "," + title + "," + status + "," + desc + "," +
+        return id + "," + TasksTypes.TASK + "," + title + "," + status + "," + desc + "," +
                 startTime.format(formatter()) + "," + duration + "," + getEndTime().format(formatter()) + ",";
     }
 
@@ -90,5 +90,16 @@ public class Task {
     @Override
     public int hashCode() {
         return Objects.hash(title, desc, status, id);
+    }
+
+    @Override
+    public int compareTo(Task o) {
+        if (this.startTime.isBefore(o.getStartTime())) {
+            return -1;
+        } else if (this.startTime.equals(o.getStartTime())) {
+            return 0;
+        } else {
+            return 1;
+        }
     }
 }

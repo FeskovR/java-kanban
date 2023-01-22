@@ -6,10 +6,10 @@ import java.io.File;
 public class Managers {
 
     public static TaskManager getDefault() {
-        return new FileBackedTasksManager("src/files/history.csv");
+        return new FileBackedTasksManager("files/history.csv");
     }
     public static TaskManager getDefault(File file) {
-        return FileBackedTasksManager.loadFromFile(file); // тут Idea ругается "Cannot access taskmanagers.FileBackedTasksManager"
+        return FileBackedTasksManager.loadFromFile(file);
     }
 
     public static InMemoryHistoryManager getDefaultHistory() {

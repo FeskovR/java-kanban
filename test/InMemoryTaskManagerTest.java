@@ -1,6 +1,4 @@
-package taskmanagers;
-
-import static org.junit.jupiter.api.Assertions.*;
+import taskmanagers.InMemoryTaskManager;
 
 class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
 

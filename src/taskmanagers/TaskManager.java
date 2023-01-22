@@ -29,5 +29,5 @@ public interface TaskManager {
     void deleteEpic(int id);
     List<Task> getHistory();
     List<Subtask> getSubtasksByEpic(Epic epic);
-    Set<Task> getSortedTasks();
+    Set<Task> getPrioritizedTasks();
 }
