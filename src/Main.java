@@ -47,10 +47,15 @@ public class Main {
         taskManager.getSubtask(subtask1.getId()); //3
         taskManager.deleteTask(task2.getId()); // 2
         taskManager.deleteEpic(epic1.getId()); //7
-        Task task3 = new Task("Task3", "Desc task3", TaskStatus.NEW, "25.01.23 12.00", 30);
+        Task task3 = new Task("Task3", "Desc task3", TaskStatus.NEW, "23.01.23 12.10", 30);
         taskManager.addNewTask(task3);
         taskManager.getTask(task3.getId());
         System.out.println(taskManager.getHistory()); //1 5 6 8 9
+
+        for (Task task : taskManager.getSortedTasks()) {
+            System.out.println(task);
+        }
+
 
         TaskManager taskManager2 = Managers.getDefault(new File("src/files", "history.csv"));
         System.out.println(taskManager2.getHistory());

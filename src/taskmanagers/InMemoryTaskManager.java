@@ -7,9 +7,7 @@ import tasks.Task;
 import constants.TaskStatus;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager{
     protected int id = 1;
@@ -17,12 +15,15 @@ public class InMemoryTaskManager implements TaskManager{
     protected final HashMap<Integer, Subtask> subtasks = new HashMap<>();
     protected final HashMap<Integer, Epic> epics = new HashMap<>();
     public HistoryManager history = Managers.getDefaultHistory();
+    protected Set<Task> sortedTasks;
 
     @Override
     public void addNewTask(Task task) {
         if (task.getId() == 0)
             task.setId(getNextId());
         tasks.put(task.getId(), task);
+        getPrioritizedTasks();
+        validateTask(task);
     }
 
     @Override
@@ -30,6 +31,8 @@ public class InMemoryTaskManager implements TaskManager{
         if (subtask.getId() == 0)
             subtask.setId(getNextId());
         subtasks.put(subtask.getId(), subtask);
+        getPrioritizedTasks();
+        validateTask(subtask);
     }
 
     @Override
@@ -111,6 +114,39 @@ public class InMemoryTaskManager implements TaskManager{
         return id++;
     }
 
+    protected void getPrioritizedTasks() {
+        Comparator<Task> comp = (task1, task2) -> {
+            LocalDateTime task1TimeStart = task1.getStartTime();
+            LocalDateTime task2TimeStart = task2.getStartTime();
+            if(task1TimeStart.isBefore(task2TimeStart)) {
+                return - 1;
+            } else if (task1TimeStart.equals(task2TimeStart)) {
+                return 0;
+            } else {
+                return 1;
+            }
+        };
+        Set<Task> tasksSet = new TreeSet<>(comp);
+        tasksSet.addAll(tasks.values());
+        tasksSet.addAll(subtasks.values());
+        sortedTasks = tasksSet;
+    }
+
+    @Override
+    public Set<Task> getSortedTasks() {
+        return this.sortedTasks;
+    }
+
+    public void validateTask(Task newTask) {
+        for (Task task : sortedTasks) {
+            if (newTask.getStartTime().isAfter(task.getStartTime()) &&
+                    newTask.getStartTime().isBefore(task.getEndTime())) {
+                System.out.println("Ваши задача пересекается по времени выполнения!");
+                break;
+            }
+        }
+    }
+
     @Override
     public List<Task> getAllTasks() {
         return new ArrayList<>(tasks.values());
@@ -168,11 +204,13 @@ public class InMemoryTaskManager implements TaskManager{
     @Override
     public void updateTask(Task newTask) {
         tasks.put(newTask.getId(), newTask);
+        getPrioritizedTasks();
     }
 
     @Override
     public void updateSubtask(Subtask newSubtask) {
         subtasks.put(newSubtask.getId(), newSubtask);
+        getPrioritizedTasks();
     }
 
     @Override
@@ -186,12 +224,14 @@ public class InMemoryTaskManager implements TaskManager{
     public void deleteTask(int id) {
         history.remove(id);
         tasks.remove(id);
+        getPrioritizedTasks();
     }
 
     @Override
     public void deleteSubtask(int id) {
         history.remove(id);
         subtasks.remove(id);
+        getPrioritizedTasks();
     }
 
     @Override
@@ -202,6 +242,7 @@ public class InMemoryTaskManager implements TaskManager{
         }
         history.remove(id);
         epics.remove(id);
+        getPrioritizedTasks();
     }
 
     @Override
