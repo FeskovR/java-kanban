@@ -6,7 +6,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         try {
             HttpTaskServer server = new HttpTaskServer();
-            server.serverStart();
+            server.start();
         } catch (IOException e) {
             System.out.println("Ошибка при запуске сервера");
         }
