@@ -5,8 +5,8 @@ import java.io.File;
 
 public class Managers {
 
-    public static TaskManager getDefault() {
-        return new FileBackedTasksManager("files/history.csv");
+    public static TaskManager getDefault(){
+        return new HttpTaskManager("http://localhost");
     }
     public static TaskManager getDefault(File file) {
         return FileBackedTasksManager.loadFromFile(file);

@@ -8,6 +8,7 @@ import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,10 +17,10 @@ import static org.junit.jupiter.api.Assertions.*;
 abstract class TaskManagerTest <T extends TaskManager> {
     T manager;
 
-    abstract T createManager();
+    abstract T createManager() throws IOException, InterruptedException;
 
     @BeforeEach
-    public void beforeEach(){
+    public void beforeEach() throws IOException, InterruptedException {
         manager = createManager();
     }
 

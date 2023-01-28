@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
-import constants.TaskStatus;
 import taskmanagers.Managers;
 import taskmanagers.TaskManager;
 import tasks.Epic;
@@ -26,11 +25,10 @@ public class HttpTaskServer {
     HttpServer httpServer;
     Gson gson = new Gson();
 
+    public HttpTaskServer() throws IOException, InterruptedException {
+    }
+
     public void start() throws IOException {
-        //
-        Task testTask = new Task("Task title", "Task description", TaskStatus.DONE, "25.11.23 12.15", 30);
-        manager.addNewTask(testTask);
-        //
         httpServer = HttpServer.create();
         httpServer.bind(new InetSocketAddress(PORT), 0);
         httpServer.createContext("/tasks/task", new TaskHandler());

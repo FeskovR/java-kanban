@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 public class InMemoryHistoryManager implements HistoryManager{
-    private List<Task> tasks = new ArrayList<>();
-    private Map<Integer, Node<Task>> tasksMap = new HashMap<>();
+    private final List<Task> tasks = new ArrayList<>();
+    private final Map<Integer, Node<Task>> tasksMap = new HashMap<>();
     private Node<Task> head;
     private Node<Task> tail;
     private int size = 0;
