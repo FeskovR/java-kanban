@@ -1,6 +1,7 @@
 import constants.TaskStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import taskmanagers.InMemoryTaskManager;
 import taskmanagers.Managers;
 import taskmanagers.TaskManager;
 import tasks.Epic;
@@ -15,7 +16,7 @@ class EpicTest {
     @BeforeEach
     public void beforeEach() {
         epic = new Epic("Epic title", "Epic desc");
-        taskManager = Managers.getDefault();
+        taskManager = new InMemoryTaskManager();
     }
 
     @Test

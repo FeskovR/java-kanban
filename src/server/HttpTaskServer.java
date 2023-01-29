@@ -57,6 +57,10 @@ public class HttpTaskServer {
         exchange.close();
     }
 
+    public void stop() {
+        httpServer.stop(0);
+    }
+
     class TaskHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
