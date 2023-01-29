@@ -6,7 +6,7 @@ import java.io.File;
 public class Managers {
 
     public static TaskManager getDefault(){
-        return new HttpTaskManager("http://localhost");
+        return HttpTaskManager.load();
     }
     public static TaskManager getDefault(File file) {
         return FileBackedTasksManager.loadFromFile(file);

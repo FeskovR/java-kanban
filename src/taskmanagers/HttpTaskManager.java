@@ -16,7 +16,6 @@ public class HttpTaskManager extends FileBackedTasksManager{
 
     public HttpTaskManager(String url){
         client = new KVTaskClient(url);
-        load();
     }
 
     @Override
@@ -31,7 +30,10 @@ public class HttpTaskManager extends FileBackedTasksManager{
         }
     }
 
-    protected void load() {
+    public static HttpTaskManager load() {
+        HttpTaskManager manager = new HttpTaskManager("http://localhost");
+        KVTaskClient client = manager.client;
+        Gson gson = new Gson();
         try {
             String tasksJson = client.load("TASK");
             if (tasksJson != null) {
@@ -41,7 +43,7 @@ public class HttpTaskManager extends FileBackedTasksManager{
                     for (JsonElement taskJson : array) {
                         if (taskJson.isJsonObject()) {
                             Task task = gson.fromJson(taskJson, Task.class);
-                            tasks.put(task.getId()                                        , task);
+                            manager.addNewTask(task);
                         }
                     }
                 }
@@ -56,7 +58,7 @@ public class HttpTaskManager extends FileBackedTasksManager{
                     for (JsonElement taskJson : array) {
                         if (taskJson.isJsonObject()) {
                             Subtask task = gson.fromJson(taskJson, Subtask.class);
-                            subtasks.put(task.getId(), task);
+                            manager.addNewSubtask(task);
                         }
                     }
                 }
@@ -71,7 +73,7 @@ public class HttpTaskManager extends FileBackedTasksManager{
                     for (JsonElement taskJson : array) {
                         if (taskJson.isJsonObject()) {
                             Epic task = gson.fromJson(taskJson, Epic.class);
-                            epics.put(task.getId(), task);
+                            manager.addNewEpic(task);
                         }
                     }
                 }
@@ -86,7 +88,7 @@ public class HttpTaskManager extends FileBackedTasksManager{
                     for (JsonElement taskJson : array) {
                         if (taskJson.isJsonObject()) {
                             Task task = gson.fromJson(taskJson, Epic.class);
-                            history.add(task);
+                            manager.addTaskToHistory(task);
                         }
                     }
                 }
@@ -95,5 +97,6 @@ public class HttpTaskManager extends FileBackedTasksManager{
         } catch (ManagerSaveException e) {
             System.out.println("Ошибка загрузки состояния");
         }
+        return manager;
     }
 }

@@ -35,12 +35,7 @@ public class HttpTaskManagerTest extends TaskManagerTest<HttpTaskManager> {
     public void testLoadingStateFromKVServerToOtherManager() {
         Task task = new Task("Title", "Desc", TaskStatus.NEW, "30.01.23 09.00", 45);
         manager.addNewTask(task);
-        HttpTaskManager manager2 = null;
-        try {
-            manager2 = createManager();
-        } catch (IOException e) {
-            System.out.println("Ошибка создания 2 менеджера");
-        }
+        HttpTaskManager manager2 = HttpTaskManager.load();
         assertEquals(task, manager2.getTask(task.getId()));
     }
 }
