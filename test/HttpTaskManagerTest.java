@@ -2,6 +2,8 @@ import constants.TaskStatus;
 import org.junit.jupiter.api.*;
 import server.KVServer;
 import taskmanagers.HttpTaskManager;
+import tasks.Epic;
+import tasks.Subtask;
 import tasks.Task;
 
 import java.io.IOException;
@@ -34,8 +36,18 @@ public class HttpTaskManagerTest extends TaskManagerTest<HttpTaskManager> {
     @Test
     public void testLoadingStateFromKVServerToOtherManager() {
         Task task = new Task("Title", "Desc", TaskStatus.NEW, "30.01.23 09.00", 45);
+        Subtask subtask = new Subtask("Subtask title", "Subtask description", TaskStatus.IN_PROGRESS, "31.01.23 10.00", 15);
+        Epic epic = new Epic("Epic title", "Epic description");
+
         manager.addNewTask(task);
+        manager.addNewSubtask(subtask);
+        epic.addSubtasksId(subtask.getId());
+        manager.addNewEpic(epic);
+
         HttpTaskManager manager2 = HttpTaskManager.load();
+
         assertEquals(task, manager2.getTask(task.getId()));
+        assertEquals(subtask, manager2.getSubtask(subtask.getId()));
+        assertEquals(epic, manager2.getEpic(epic.getId()));
     }
 }

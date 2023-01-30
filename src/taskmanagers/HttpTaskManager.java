@@ -10,6 +10,9 @@ import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class HttpTaskManager extends FileBackedTasksManager{
     KVTaskClient client;
     Gson gson = new Gson();
@@ -43,7 +46,7 @@ public class HttpTaskManager extends FileBackedTasksManager{
                     for (JsonElement taskJson : array) {
                         if (taskJson.isJsonObject()) {
                             Task task = gson.fromJson(taskJson, Task.class);
-                            manager.addNewTask(task);
+                            manager.addTaskToMap(task);
                         }
                     }
                 }
@@ -58,7 +61,7 @@ public class HttpTaskManager extends FileBackedTasksManager{
                     for (JsonElement taskJson : array) {
                         if (taskJson.isJsonObject()) {
                             Subtask task = gson.fromJson(taskJson, Subtask.class);
-                            manager.addNewSubtask(task);
+                            manager.addSubtaskToMap(task);
                         }
                     }
                 }
@@ -73,7 +76,7 @@ public class HttpTaskManager extends FileBackedTasksManager{
                     for (JsonElement taskJson : array) {
                         if (taskJson.isJsonObject()) {
                             Epic task = gson.fromJson(taskJson, Epic.class);
-                            manager.addNewEpic(task);
+                            manager.addEpicToMap(task);
                         }
                     }
                 }
@@ -87,7 +90,7 @@ public class HttpTaskManager extends FileBackedTasksManager{
                     JsonArray array = historyElement.getAsJsonArray();
                     for (JsonElement taskJson : array) {
                         if (taskJson.isJsonObject()) {
-                            Task task = gson.fromJson(taskJson, Epic.class);
+                            Task task = gson.fromJson(taskJson, Task.class);
                             manager.addTaskToHistory(task);
                         }
                     }
@@ -98,5 +101,17 @@ public class HttpTaskManager extends FileBackedTasksManager{
             System.out.println("Ошибка загрузки состояния");
         }
         return manager;
+    }
+
+    public void addTaskToMap(Task task) {
+        this.tasks.put(task.getId(), task);
+    }
+
+    public void addSubtaskToMap(Subtask task) {
+        this.subtasks.put(task.getId(), task);
+    }
+
+    public void addEpicToMap(Epic task) {
+        this.epics.put(task.getId(), task);
     }
 }

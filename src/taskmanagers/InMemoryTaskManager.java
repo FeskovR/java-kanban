@@ -256,7 +256,7 @@ public class InMemoryTaskManager implements TaskManager{
         return history.getHistory();
     }
 
-    protected void addTaskToHistory(Task task) {
+    public void addTaskToHistory(Task task) {
         if (task != null) {
             history.add(task);
         }
