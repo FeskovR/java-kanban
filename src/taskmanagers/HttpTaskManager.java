@@ -113,13 +113,16 @@ public class HttpTaskManager extends FileBackedTasksManager{
 
     public void addTaskToMap(Task task) {
         this.tasks.put(task.getId(), task);
+        this.sortedTasks.add(task);
     }
 
     public void addSubtaskToMap(Subtask task) {
         this.subtasks.put(task.getId(), task);
+        this.sortedTasks.add(task);
     }
 
     public void addEpicToMap(Epic task) {
         this.epics.put(task.getId(), task);
+        this.sortedTasks.add(task);
     }
 }
