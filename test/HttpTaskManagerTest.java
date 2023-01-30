@@ -44,10 +44,31 @@ public class HttpTaskManagerTest extends TaskManagerTest<HttpTaskManager> {
         epic.addSubtasksId(subtask.getId());
         manager.addNewEpic(epic);
 
+        manager.getSubtask(subtask.getId());
+        manager.getTask(task.getId());
+
         HttpTaskManager manager2 = HttpTaskManager.load();
 
         assertEquals(task, manager2.getTask(task.getId()));
         assertEquals(subtask, manager2.getSubtask(subtask.getId()));
         assertEquals(epic, manager2.getEpic(epic.getId()));
+    }
+
+    @Test
+    public void testLoadingHistoryFromKVServerToOtherManager() {
+        Task task = new Task("Title", "Desc", TaskStatus.NEW, "30.01.23 09.00", 45);
+        Subtask subtask = new Subtask("Subtask title", "Subtask description", TaskStatus.IN_PROGRESS, "31.01.23 10.00", 15);
+        Epic epic = new Epic("Epic title", "Epic description");
+
+        manager.addNewTask(task);
+        manager.addNewSubtask(subtask);
+        epic.addSubtasksId(subtask.getId());
+        manager.addNewEpic(epic);
+
+        manager.getSubtask(subtask.getId());
+        manager.getTask(task.getId());
+
+        HttpTaskManager manager2 = HttpTaskManager.load();
+        assertArrayEquals(manager.getHistory().toArray(), manager2.getHistory().toArray());
     }
 }

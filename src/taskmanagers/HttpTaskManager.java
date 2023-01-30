@@ -1,9 +1,6 @@
 package taskmanagers;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import exceptions.ManagerSaveException;
 import httpClient.KVTaskClient;
 import tasks.Epic;
@@ -90,8 +87,19 @@ public class HttpTaskManager extends FileBackedTasksManager{
                     JsonArray array = historyElement.getAsJsonArray();
                     for (JsonElement taskJson : array) {
                         if (taskJson.isJsonObject()) {
-                            Task task = gson.fromJson(taskJson, Task.class);
-                            manager.addTaskToHistory(task);
+                            JsonObject taskObject = taskJson.getAsJsonObject();
+                            int id = taskObject.get("id").getAsInt();
+                            Task task = null;
+                            if (manager.tasks.containsKey(id)) {
+                                task = gson.fromJson(taskObject, Task.class);
+                            } else if (manager.subtasks.containsKey(id)) {
+                                task = gson.fromJson(taskObject, Subtask.class);
+                            } else if (manager.epics.containsKey(id)) {
+                                task = gson.fromJson(taskObject, Epic.class);
+                            }
+                            if (task != null) {
+                                manager.addTaskToHistory(task);
+                            }
                         }
                     }
                 }
