@@ -25,6 +25,7 @@ public class HttpTaskManager extends FileBackedTasksManager{
             client.put("SUBTASK", gson.toJson(subtasks.values()));
             client.put("EPIC", gson.toJson(epics.values()));
             client.put("HISTORY", gson.toJson(getHistory()));
+            client.put("ID", gson.toJson(id));
         } catch (ManagerSaveException e) {
             System.out.println("Ошибка записи");
         }
@@ -103,6 +104,12 @@ public class HttpTaskManager extends FileBackedTasksManager{
                         }
                     }
                 }
+            }
+
+            String managerId = client.load("ID");
+            if (managerId != null) {
+                Integer id = gson.fromJson(managerId, Integer.class);
+                manager.id = id;
             }
 
         } catch (ManagerSaveException e) {

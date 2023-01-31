@@ -94,4 +94,27 @@ public class HttpTaskManagerTest extends TaskManagerTest<HttpTaskManager> {
 
         assertArrayEquals(manager.getPrioritizedTasks().toArray(), manager2.getPrioritizedTasks().toArray());
     }
+
+    @Test
+    public void isIdFromOtherManagerIsValid() {
+        Task task = new Task("Title", "Desc", TaskStatus.NEW, "30.01.23 09.00", 45);
+        Task task1 = new Task("Title", "Desc", TaskStatus.NEW, "02.02.23 11.00", 15);
+        Task task2 = new Task("Title", "Desc", TaskStatus.NEW, "15.01.23 23.00", 60);
+        Subtask subtask = new Subtask("Subtask title", "Subtask description", TaskStatus.IN_PROGRESS, "31.01.23 10.00", 15);
+        Epic epic = new Epic("Epic title", "Epic description");
+
+        manager.addNewTask(task);
+        manager.addNewTask(task1);
+        manager.addNewTask(task2);
+        manager.addNewSubtask(subtask);
+        manager.deleteTask(task1.getId());
+        epic.addSubtasksId(subtask.getId());
+        manager.addNewEpic(epic);
+        task1.setId(0);
+        manager.addNewTask(task1);
+
+        HttpTaskManager manager2 = HttpTaskManager.load();
+
+        assertEquals(manager.id, manager2.id);
+    }
 }
